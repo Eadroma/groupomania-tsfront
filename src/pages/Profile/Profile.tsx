@@ -5,7 +5,7 @@ import Posts from '../../components/Post/post';
 import './style.css';
 import getUserbyId from '../../hooks/getUser';
 import { getItemLocalStorage } from '../../hooks/getLocalStorage';
-import { Avatar, Card, CardContent, CardHeader, CardMedia, IconButton, Typography } from '@mui/material';
+import { Avatar, Card, CardContent, CardHeader, CardMedia, IconButton, Skeleton, Typography } from '@mui/material';
 import addPost from '../../components/addPost/addPost';
 const ProfileHeader = () => {
     const queryString = window.location.search;
@@ -15,7 +15,11 @@ const ProfileHeader = () => {
     if (objectId) userService = getUserbyId(parseInt(objectId));
     return (
         <div>
-            {userService.status === 'loading' && <div>Loading...</div>}
+            {userService.status === 'loading' && (
+                <div>
+                    <Skeleton variant="rectangular" height={275} animation="wave" />
+                </div>
+            )}
             {userService.status === 'loaded' && userService.status === 'loaded' && (
                 <Card className="layoutHeader">
                     <CardMedia component="img" height="275" image={userService.payload.coverUrl} alt="cover img" />
@@ -41,7 +45,7 @@ export default function Profile() {
     return (
         <div className="container">
             <Sidebar />
-            <div className="layout">
+            <div className="profileLayout">
                 <ProfileHeader />
                 {addPost()}
                 <h2 id="posts">Posts:</h2>

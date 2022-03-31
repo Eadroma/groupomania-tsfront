@@ -2,8 +2,10 @@
     display: flex;
 }
 
-.layout {
+.profileLayout {
     width: 80%;
+    display: flex;
+    flex-direction: column;
 }
 
 .layoutHeader {
