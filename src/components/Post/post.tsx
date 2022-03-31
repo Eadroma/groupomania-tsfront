@@ -11,16 +11,13 @@ const Posts: React.FC<{}> = () => {
     const objectId = new URLSearchParams(queryString).get('id');
     const loStorage = getItemLocalStorage();
     let service = getPostsbyId(loStorage.id);
-    let userService = getUserbyId(loStorage.id);
     if (objectId) {
         service = getPostsbyId(parseInt(objectId));
-        userService = getUserbyId(parseInt(objectId));
     }
     return (
         <div>
             {service.status === 'loading' && <div>Loading...</div>}
             {service.status === 'loaded' &&
-                userService.status === 'loaded' &&
                 service.payload.map(
                     (data: {
                         date: string;
@@ -31,16 +28,17 @@ const Posts: React.FC<{}> = () => {
                             | React.ReactPortal
                             | null
                             | undefined;
+                        userEmail: string;
+                        userName: string;
                     }) => (
                         <div className="postLayout">
                             <Card>
                                 <CardContent>
                                     <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                                        {userService.payload.email} -{' '}
-                                        {Math.round((Date.now() - parseInt(data.date)) / 60000)}m
+                                        {data.userEmail} - {Math.round((Date.now() - parseInt(data.date)) / 60000)}m
                                     </Typography>
                                     <Typography variant="h5" component="div">
-                                        {userService.payload.name}
+                                        {data.userName}
                                     </Typography>
                                     {/* <Typography sx={{ mb: 1.5 }} color="text.secondary">
                      adjective

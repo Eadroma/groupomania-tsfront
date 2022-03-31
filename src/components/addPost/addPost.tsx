@@ -3,23 +3,33 @@ import { Box, Button, Card, Divider, IconButton, Input, Stack, TextField } from 
 import { green } from '@mui/material/colors';
 import React from 'react';
 import { getItemLocalStorage } from '../../hooks/getLocalStorage';
+import getUserbyId from '../../hooks/getUser';
 
 type dataObject = {
     content: string;
     userId: number;
+    userName: string;
+    userEmail: string;
 };
 const addPost: React.FC<{}> = () => {
     const [data, setData] = React.useState('');
     const localStorage = getItemLocalStorage();
+    const user = getUserbyId(localStorage.id);
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setData(event.target.value);
-        console.log(data);
     };
 
     const handlePost = () => {
         if (!data) return;
-        const postObject: dataObject = { content: data, userId: localStorage.id };
+        const postObject: dataObject = {
+            content: data,
+            userId: localStorage.id,
+            userName: user?.payload?.name,
+            userEmail: user?.payload?.email,
+        };
+
         const api = 'https://groupomania-myback.herokuapp.com/api/posts/';
+        const devApi = 'http://localhost:3306/api/posts/';
         const options = {
             method: 'POST',
             headers: {
@@ -27,7 +37,7 @@ const addPost: React.FC<{}> = () => {
             },
             body: JSON.stringify(postObject),
         };
-        fetch(api, options)
+        fetch(devApi, options)
             .then((response) => response.json())
             .then(() => window.location.reload());
     };
@@ -35,7 +45,6 @@ const addPost: React.FC<{}> = () => {
         <Box
             sx={{
                 width: '80%',
-                height: 300,
                 margin: 'auto',
                 display: 'flex',
                 justifyContent: 'center',
