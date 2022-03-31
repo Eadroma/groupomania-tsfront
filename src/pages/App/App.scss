@@ -1,0 +1,17 @@
+#msgError {
+    color: rgb(244, 67, 54);
+}
+
+.layout {
+    display: flex;
+    width: 80%;
+
+    .mainContent {
+        width: 80%;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100vh;
+    }
+}

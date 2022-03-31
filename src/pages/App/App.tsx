@@ -15,6 +15,10 @@ import {
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Sidebar from '../../components/Sidebar/Sidebar';
+import './App.scss';
+import addPost from '../../components/addPost/addPost';
+import navBar from '../../components/Navbar/navBar';
+
 type LocalUserInfo = {
     id: string;
     token: string;
@@ -65,10 +69,16 @@ function NotSigned(): React.ReactNode {
                 password: data.get('password'),
             }),
         });
-        const result = await resp.json();
-        const { id, token } = result;
-        const localUser = { id, token };
-        if (addItemLocalStorage(localUser)) window.location.reload();
+        const msgError = document.getElementById('msgError') as HTMLElement;
+        if (resp.status == 400) {
+            msgError.textContent = 'le mail ou le mot de passe est incorrecte.';
+        } else {
+            const result = await resp.json();
+            const { id, token } = result;
+            msgError.textContent = '';
+            const localUser = { id, token };
+            if (addItemLocalStorage(localUser)) window.location.reload();
+        }
     };
 
     return (
@@ -134,6 +144,7 @@ function NotSigned(): React.ReactNode {
                             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                                 Sign In
                             </Button>
+                            <p id="msgError"></p>
                             <Grid container>
                                 <Grid item xs>
                                     <Link href="#" variant="body2">
@@ -162,7 +173,13 @@ export default function App() {
     if (!user) return <React.Fragment>{NotSigned()}</React.Fragment>;
     return (
         <React.Fragment>
-            <Sidebar />
+            <div className="layout">
+                <Sidebar />
+                <div className="mainContent">
+                    {navBar()}
+                    {addPost()}
+                </div>
+            </div>
         </React.Fragment>
     );
 }
