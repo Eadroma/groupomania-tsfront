@@ -47,7 +47,6 @@ export default function SignUp() {
 
         const data = new FormData(event.currentTarget);
         const api = 'https://groupomania-myback.herokuapp.com/api/auth/register';
-        console.log(0);
         const resp = await fetch(api, {
             method: 'POST',
             headers: {
@@ -55,7 +54,6 @@ export default function SignUp() {
             },
             body: JSON.stringify({ email: data.get('email'), password: data.get('password') }),
         });
-        console.log(2);
         if (resp.status == 400) {
             console.log('in if');
             window.alert('An error occured');

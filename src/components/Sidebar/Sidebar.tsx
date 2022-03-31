@@ -31,7 +31,6 @@ const Sidebar: React.FC = () => {
                 alt="logo Groupomania"
             />
             <SidebarLink text="Home" active={true} Icon={HomeMax} link="/" />
-            <SidebarLink text="Explore" Icon={Search} link="/find" />
             <SidebarLink text="Notifications" Icon={Notifications} link="#" />
             <SidebarLink text="Messages" Icon={MailOutline} link="#" />
             <SidebarLink text={name} Icon={PermIdentity} link="/profile" />

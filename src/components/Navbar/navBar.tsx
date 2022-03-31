@@ -13,7 +13,7 @@ const searchBar: React.FC<{}> = () => {
                 p: '2px 4px',
                 display: 'flex',
                 alignItems: 'center',
-                width: 400,
+                width: '80%',
             }}
         >
             <IconButton sx={{ p: '10px' }} aria-label="menu">

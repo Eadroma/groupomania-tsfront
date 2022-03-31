@@ -18,6 +18,7 @@ import Sidebar from '../../components/Sidebar/Sidebar';
 import './App.scss';
 import addPost from '../../components/addPost/addPost';
 import navBar from '../../components/Navbar/navBar';
+import AllPosts from '../../components/Posts/posts';
 
 type LocalUserInfo = {
     id: string;
@@ -177,7 +178,10 @@ export default function App() {
                 <Sidebar />
                 <div className="mainContent">
                     {navBar()}
-                    {addPost()}
+                    <div className="postContent">
+                        {addPost()}
+                        {AllPosts()}
+                    </div>
                 </div>
             </div>
         </React.Fragment>
