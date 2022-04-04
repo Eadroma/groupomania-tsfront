@@ -22,10 +22,10 @@ ReactDOM.render(
     <BrowserRouter>
         <Routes>
             <Route path="/" element={<App />} />
+            <Route path="/signup" element={<SignUp />} />
             <Route path="/profile" element={<ProfileDefault />} />
             <Route path="/profile/:id" element={<Profile />} />
             <Route path="/profile/settings" element={<SettingsPage />} />
-            <Route path="/signup" element={<SignUp />} />
         </Routes>
     </BrowserRouter>,
     document.getElementById('root'),

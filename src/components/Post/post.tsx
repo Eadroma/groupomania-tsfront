@@ -58,8 +58,7 @@ const Posts: React.FC<{ id: number }> = ({ id }) => {
                             <Card>
                                 <CardContent>
                                     <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                                        {data.userEmail} - {Math.round((Date.now() - parseInt(data.date)) / 60000) - 60}
-                                        m
+                                        {data.userEmail} - {Math.round((Date.now() - parseInt(data.date)) / 60000)}m
                                     </Typography>
                                     <Typography variant="h5" component="div">
                                         {data.userName}
