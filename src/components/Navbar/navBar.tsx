@@ -1,8 +1,18 @@
-import { IconButton, InputBase, Paper, Divider, Autocomplete, TextField } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { IconButton, Paper, Divider, Autocomplete, TextField } from '@mui/material';
+import React from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import getUsers from '../../hooks/getUsers';
+
+type UserType = {
+    id: number;
+    email: string;
+    name: string;
+    posts: [];
+    coverUrl: string;
+    imgUrl: string;
+    updatedAt: string;
+};
 const searchBar: React.FC<{}> = () => {
     const users = getUsers();
     console.log(users);
@@ -24,7 +34,7 @@ const searchBar: React.FC<{}> = () => {
                 sx={{ ml: 1, flex: 1 }}
                 placeholder="Jean paul.."
                 renderInput={(params) => <TextField {...params} label="Name" />}
-                options={users.map((user) => user.name)}
+                options={users.map((user: UserType) => user.name)}
                 id="searchbar"
             />
             <IconButton
@@ -34,8 +44,8 @@ const searchBar: React.FC<{}> = () => {
                 onClick={(event) => {
                     event.preventDefault();
 
-                    const inputResult = document?.getElementById('searchbar')?.value;
-                    const user = users.filter((e) => e.name == inputResult)[0];
+                    const inputResult = (document.getElementById('searchbar') as HTMLInputElement).value;
+                    const user: UserType = users.filter((user: UserType) => user.name == inputResult)[0];
                     location.href = `/profile/${user.id}`;
                 }}
             >

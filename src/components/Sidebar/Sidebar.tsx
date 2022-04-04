@@ -1,10 +1,7 @@
 import './sidebar.scss';
-import { Button, SvgIcon, Menu, MenuItem } from '@mui/material';
-import { HomeMax, Search, Notifications, MailOutline, PermIdentity, MoreHoriz } from '@mui/icons-material';
-import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import App from '../../pages/App/App';
-import Profile from '../../pages/Profile/Profile';
+import { Button } from '@mui/material';
+import { HomeMax, Notifications, MailOutline, PermIdentity, MoreHoriz } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 import React from 'react';
 import { getItemLocalStorage } from '../../hooks/getLocalStorage';
 import getUserbyId from '../../hooks/getUser';

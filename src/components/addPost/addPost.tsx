@@ -1,6 +1,4 @@
-import { PhotoCamera } from '@mui/icons-material';
-import { Box, Button, Card, Divider, IconButton, Input, Stack, TextField } from '@mui/material';
-import { green } from '@mui/material/colors';
+import { Box, Button, Divider, Stack, TextField } from '@mui/material';
 import React from 'react';
 import { getItemLocalStorage } from '../../hooks/getLocalStorage';
 import getUserbyId from '../../hooks/getUser';
@@ -15,6 +13,7 @@ const addPost: React.FC<{}> = () => {
     const [data, setData] = React.useState('');
     const localStorage = getItemLocalStorage();
     const user = getUserbyId(localStorage.id);
+
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setData(event.target.value);
     };
@@ -29,7 +28,7 @@ const addPost: React.FC<{}> = () => {
         };
 
         const api = 'https://groupomania-myback.herokuapp.com/api/posts/';
-        const devApi = 'http://localhost:3306/api/posts/';
+        // const devApi = 'http://localhost:3306/api/posts/';
         const options = {
             method: 'POST',
             headers: {
@@ -39,7 +38,10 @@ const addPost: React.FC<{}> = () => {
         };
         fetch(api, options)
             .then((response) => response.json())
-            .then(() => window.location.reload());
+            .then(() => {
+                const textArea = document.getElementById('textArea') as HTMLInputElement;
+                textArea.value = '';
+            });
     };
     return (
         <Box

@@ -22,7 +22,7 @@ const getPostsbyId = (id: number) => {
             .then((response) => response.json())
             .then((response) => setResult({ status: 'loaded', payload: response.reverse() }))
             .catch((error) => setResult({ status: 'error', error }));
-    }, []);
+    }, [result]);
 
     return result;
 };

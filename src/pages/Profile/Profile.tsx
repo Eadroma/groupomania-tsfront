@@ -8,11 +8,10 @@ import { Avatar, Card, CardHeader, CardMedia, IconButton, Skeleton } from '@mui/
 import SettingsIcon from '@mui/icons-material/Settings';
 import addPost from '../../components/addPost/addPost';
 import { getItemLocalStorage } from '../../hooks/getLocalStorage';
-const ProfileHeader = () => {
-    const { id } = useParams();
+const ProfileHeader: React.FC<{ id: number }> = ({ id }) => {
     const loStorage = getItemLocalStorage();
 
-    let userService = getUserbyId(parseInt(id as string));
+    let userService = getUserbyId(id);
     console.log(userService);
     return (
         <div>
@@ -37,7 +36,7 @@ const ProfileHeader = () => {
                             title={`${userService.payload.name} - ${userService.payload.email}`}
                             subheader={userService.payload.description}
                         />
-                        {loStorage.id == parseInt(id as string) && (
+                        {loStorage.id == id && (
                             <div className="layoutCardSettings">
                                 <Link to={'/profile/settings'}>
                                     <SettingsIcon />
@@ -52,14 +51,16 @@ const ProfileHeader = () => {
     );
 };
 export default function Profile() {
+    const { id } = useParams();
+
     return (
         <div className="container">
             <Sidebar />
             <div className="profileLayout">
-                <ProfileHeader />
-                {addPost()}
+                <ProfileHeader id={parseInt(id as unknown as string)} />
+                {addPost({})}
                 <h2 id="posts">Posts:</h2>
-                <Posts />
+                <Posts id={parseInt(id as unknown as string)} />
             </div>
         </div>
     );

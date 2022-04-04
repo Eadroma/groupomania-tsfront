@@ -12,7 +12,6 @@ import {
     Grid,
     Typography,
 } from '@mui/material';
-import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import './App.scss';
@@ -170,7 +169,7 @@ function NotSigned(): React.ReactNode {
 }
 
 export default function App() {
-    const [user, setUser] = React.useState(JSON.parse(localStorage.getItem('user') as string));
+    const [user] = React.useState(JSON.parse(localStorage.getItem('user') as string));
     if (!user) return <React.Fragment>{NotSigned()}</React.Fragment>;
     return (
         <React.Fragment>
