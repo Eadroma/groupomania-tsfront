@@ -27,7 +27,7 @@ const getAllPosts = () => {
                 console.error(error);
                 setResult({ status: 'error', error });
             });
-    }, []);
+    }, [result]);
 
     return result;
 };

@@ -36,7 +36,6 @@ const CardButtons: React.FC<{ id: number }> = ({ id }) => {
 
 const AllPosts: React.FC<{}> = () => {
     const service = getAllPosts();
-    console.log(service.payload);
     return (
         <div id="postMain">
             {service.status === 'loading' && <div>Loading...</div>}
@@ -59,7 +58,8 @@ const AllPosts: React.FC<{}> = () => {
                             <Card>
                                 <CardContent>
                                     <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                                        {data.userEmail} - {Math.round((Date.now() - parseInt(data.date)) / 60000)}m
+                                        {data.userEmail} - {Math.round((Date.now() - parseInt(data.date)) / 60000) - 60}
+                                        m
                                     </Typography>
                                     <Typography variant="h5" component="div">
                                         {data.userName}
