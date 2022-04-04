@@ -1,0 +1,38 @@
+.container {
+    display: flex;
+}
+
+.profileLayout {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+}
+
+.layoutHeader {
+    min-width: 100%;
+    margin-bottom: 2rem;
+
+    .layoutCardMedia {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .layoutCardSettings {
+            width: 5%;
+            color: black;
+
+            a {
+                text-decoration: none;
+                color: black
+            }
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+#posts {
+    margin-left: 10%;
+}

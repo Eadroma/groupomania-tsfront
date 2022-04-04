@@ -5,7 +5,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import getUsers from '../../hooks/getUsers';
 const searchBar: React.FC<{}> = () => {
     const users = getUsers();
-
+    console.log(users);
     return (
         <Paper
             component="form"
@@ -36,7 +36,7 @@ const searchBar: React.FC<{}> = () => {
 
                     const inputResult = document?.getElementById('searchbar')?.value;
                     const user = users.filter((e) => e.name == inputResult)[0];
-                    location.href = `/profile?id=${user.id}`;
+                    location.href = `/profile/${user.id}`;
                 }}
             >
                 <SearchIcon />

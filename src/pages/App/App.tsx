@@ -177,10 +177,10 @@ export default function App() {
             <div className="layout">
                 <Sidebar />
                 <div className="mainContent">
-                    {navBar()}
+                    {navBar({})}
                     <div className="postContent">
-                        {addPost()}
-                        {AllPosts()}
+                        {addPost({})}
+                        {AllPosts({})}
                     </div>
                 </div>
             </div>

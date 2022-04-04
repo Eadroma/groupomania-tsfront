@@ -24,8 +24,8 @@ const addPost: React.FC<{}> = () => {
         const postObject: dataObject = {
             content: data,
             userId: localStorage.id,
-            userName: user?.payload?.name,
-            userEmail: user?.payload?.email,
+            userName: user?.payload?.name as string,
+            userEmail: user?.payload?.email as string,
         };
 
         const api = 'https://groupomania-myback.herokuapp.com/api/posts/';
@@ -37,7 +37,7 @@ const addPost: React.FC<{}> = () => {
             },
             body: JSON.stringify(postObject),
         };
-        fetch(devApi, options)
+        fetch(api, options)
             .then((response) => response.json())
             .then(() => window.location.reload());
     };
@@ -48,6 +48,7 @@ const addPost: React.FC<{}> = () => {
                 margin: 'auto',
                 display: 'flex',
                 justifyContent: 'center',
+                alignItems: 'flex-end',
             }}
             component="form"
             noValidate

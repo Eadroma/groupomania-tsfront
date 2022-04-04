@@ -3,8 +3,40 @@ import React from 'react';
 import getAllPosts from '../../hooks/getPosts';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import './posts.scss';
+import { getItemLocalStorage } from '../../hooks/getLocalStorage';
+
+const CardButtons: React.FC<{ id: number }> = ({ id }) => {
+    const loStorage = getItemLocalStorage();
+
+    if (id == loStorage.id)
+        return (
+            <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Fab variant="extended" color="primary" aria-label="add">
+                    Commenter
+                </Fab>
+                <Fab variant="extended" color="secondary" aria-label="edit">
+                    Modifier
+                </Fab>
+                <Fab variant="extended" aria-label="like">
+                    <FavoriteIcon />
+                </Fab>
+            </CardActions>
+        );
+    return (
+        <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Fab variant="extended" color="primary" aria-label="add">
+                Commenter
+            </Fab>
+            <Fab variant="extended" aria-label="like">
+                <FavoriteIcon />
+            </Fab>
+        </CardActions>
+    );
+};
+
 const AllPosts: React.FC<{}> = () => {
     const service = getAllPosts();
+    console.log(service.payload);
     return (
         <div id="postMain">
             {service.status === 'loading' && <div>Loading...</div>}
@@ -21,6 +53,7 @@ const AllPosts: React.FC<{}> = () => {
                             | undefined;
                         userEmail: string;
                         userName: string;
+                        userId: number;
                     }) => (
                         <div className="postMainLayout">
                             <Card>
@@ -36,7 +69,7 @@ const AllPosts: React.FC<{}> = () => {
                  </Typography> */}
                                     <Typography variant="body2">{data.textContent}</Typography>
                                 </CardContent>
-                                <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
+                                {/* <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
                                     <Fab variant="extended" color="primary" aria-label="add">
                                         Commenter
                                     </Fab>
@@ -46,7 +79,8 @@ const AllPosts: React.FC<{}> = () => {
                                     <Fab variant="extended" aria-label="like">
                                         <FavoriteIcon />
                                     </Fab>
-                                </CardActions>
+                                </CardActions> */}
+                                <CardButtons id={data.userId} />
                             </Card>
                         </div>
                     ),
