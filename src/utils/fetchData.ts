@@ -1,4 +1,3 @@
-import { modalUnstyledClasses } from "@mui/material";
 
 const fetchDataWithID = async (id: string) => {
     const api =  `https://groupomania-myback.herokuapp.com/api/auth/${id}`;
