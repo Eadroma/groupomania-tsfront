@@ -1,17 +1,20 @@
 import './settings.scss';
 import { TextField, Button, Avatar, Card, CardHeader, CardMedia, IconButton } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import getUserbyId from '../../../hooks/getUser';
 import { getItemLocalStorage } from '../../../hooks/getLocalStorage';
 import { PhotoCamera } from '@mui/icons-material';
+import updateUser from '../../../hooks/updateUser';
+import { objectForm } from '../../../types/objectForm';
+import { LoadingButton } from '@mui/lab';
 
 const initialFormValues = {
     email: '',
     name: '',
-    imgUrl: '',
-    coverUrl: '',
     description: '',
+    coverUrl: '',
+    imgUrl: '',
     formSubmitted: false,
     success: false,
 };
@@ -41,18 +44,15 @@ const useFormControls = () => {
     const [values, setValues] = useState(initialFormValues);
     // "errors" is used to check the form for errors
     const [errors, setErrors] = useState({} as any);
+
     const validate: any = (fieldValues = values) => {
         let temp: any = { ...errors };
 
-        if ('name' in fieldValues) temp.name = fieldValues.name ? '' : 'This field is required.';
-
         if ('email' in fieldValues) {
-            temp.email = fieldValues.email ? '' : 'This field is required.';
+            temp.email = fieldValues.email;
             if (fieldValues.email)
                 temp.email = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(fieldValues.email) ? '' : 'Email is not valid.';
         }
-
-        if ('description' in fieldValues) temp.description = fieldValues.description ? '' : 'This field is required.';
 
         setErrors({
             ...temp,
@@ -69,15 +69,26 @@ const useFormControls = () => {
     const handleFormSubmit = async (e: any) => {
         e.preventDefault();
         if (formIsValid()) {
-            // await postContactForm(values);
-            alert("You've posted your form!");
+            const resp = await updateUser(values as objectForm);
+            if (resp) {
+                setValues({
+                    ...values,
+                    ['formSubmitted']: true,
+                    ['success']: true,
+                });
+                location.href = '/profile';
+            } else {
+                setValues({
+                    ...values,
+                    ['formSubmitted']: false,
+                    ['success']: false,
+                });
+            }
         }
     };
     const formIsValid = (fieldValues = values) => {
         const isValid =
-            fieldValues.name &&
-            fieldValues.email &&
-            fieldValues.description &&
+            (fieldValues.name || fieldValues.email || fieldValues.description) &&
             Object.values(errors).every((x) => x === '');
 
         return isValid;
@@ -89,10 +100,148 @@ const useFormControls = () => {
         errors,
     };
 };
+type imagesType = {
+    cover: object | null;
+    img: object | null;
+};
+
 const SettingsPage = () => {
     const loStorage = getItemLocalStorage();
     const userService = getUserbyId(loStorage.id);
     const { handleInputValue, handleFormSubmit, formIsValid, errors } = useFormControls();
+    const [loading, setLoading] = useState(false);
+
+    const [images, setImages] = useState<imagesType>();
+    const [avatarURL, setAvatarURL] = useState<string>();
+    const [coverURL, setCoverURL] = useState<string>();
+
+    useEffect(() => {
+        console.log('on useEffect');
+        if (images && images.cover) {
+            const previewImg = URL.createObjectURL(images.cover as Blob | MediaSource);
+            setCoverURL(`${previewImg}`);
+        }
+        if (images && images.img) {
+            const previewImg = URL.createObjectURL(images.img as Blob | MediaSource);
+            setAvatarURL(`${previewImg}`);
+        }
+    }, [images]);
+
+    const handleHeaderImg = (e: { target: { files: any } }) => {
+        console.log('on handleHeaderImg');
+        if (images) {
+            setImages({
+                ...images,
+                ['cover']: e.target.files[0],
+            });
+        } else {
+            setImages({
+                img: null,
+                cover: e.target.files[0],
+            });
+        }
+        return e;
+    };
+
+    const handleAvatarImg = (e: { target: { files: any } }) => {
+        console.log('on handleAvatarImg');
+        if (images) {
+            setImages({
+                ...images,
+                ['img']: e.target.files[0],
+            });
+        } else {
+            setImages({
+                cover: null,
+                img: e.target.files[0],
+            });
+        }
+        return e;
+    };
+
+    // const postImg = async () => {
+    //     setLoading(true);
+    //     for (let key of Object.keys(imageURLType)) {
+    //         const data = new FormData();
+    //         data.append('file', images[0]);
+    //         data.append('upload_preset', 'meldob6j');
+    //         data.append('cloud_name', 'datxh7pfw');
+    //         try {
+    //             fetch('https://api.cloudinary.com/v1_1/datxh7pfw/image/upload', {
+    //                 method: 'post',
+    //                 body: data,
+    //             })
+    //                 .then((resp) => resp.json())
+    //                 .then((data) => {
+    //                     // console.log(data);
+    //                 });
+    //         } catch (err) {
+    //             console.error(err);
+    //         }
+    //     }
+    // };
+    const postImg = () => {
+        setLoading(true);
+
+        if (images && images.cover) {
+            const data = new FormData();
+            data.append('file', images.cover as Blob);
+            data.append('upload_preset', 'meldob6j');
+            data.append('cloud_name', 'datxh7pfw');
+            try {
+                fetch('https://api.cloudinary.com/v1_1/datxh7pfw/image/upload', {
+                    method: 'post',
+                    body: data,
+                })
+                    .then((resp) => resp.json())
+                    .then(async (data) => {
+                        if (
+                            await updateUser({
+                                coverUrl: data.url,
+                            } as objectForm)
+                        ) {
+                            setLoading(false);
+                            alert('profil modifié');
+                        }
+                    });
+            } catch (err) {
+                console.error(err);
+            }
+        } else if (images && images.img) {
+            const data = new FormData();
+            data.append('file', images.img as Blob);
+            data.append('upload_preset', 'meldob6j');
+            data.append('cloud_name', 'datxh7pfw');
+            try {
+                fetch('https://api.cloudinary.com/v1_1/datxh7pfw/image/upload', {
+                    method: 'post',
+                    body: data,
+                })
+                    .then((resp) => resp.json())
+                    .then(async (data) => {
+                        if (
+                            await updateUser({
+                                imgUrl: data.url,
+                            } as objectForm)
+                        ) {
+                            setLoading(false);
+                            alert('profil modifié');
+                        }
+                    });
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    };
+
+    const resetImg = () => {
+        setImages(undefined);
+        setAvatarURL('');
+        setCoverURL('');
+        setLoading(false);
+        return;
+    };
+
     return (
         <div className="container">
             <Sidebar />
@@ -103,16 +252,18 @@ const SettingsPage = () => {
                             <CardMedia
                                 component="img"
                                 height="275"
-                                image={userService.payload.coverUrl}
+                                image={coverURL || userService.payload.coverUrl}
                                 alt="cover img"
+                                sx={{ height: 275, width: 1080 }}
                             />
-                            <label htmlFor="icon-button-file">
-                                <input accept="image/*" id="icon-button-file" type="file" />
+                            <label htmlFor="headerButtonFile">
+                                <input accept="image/*" id="headerButtonFile" type="file" onChange={handleHeaderImg} />
                                 <Button
                                     color="primary"
                                     aria-label="upload picture"
                                     component="span"
                                     startIcon={<PhotoCamera />}
+                                    className="buttonHeaderForm"
                                 >
                                     modify header
                                 </Button>
@@ -122,19 +273,25 @@ const SettingsPage = () => {
                                     avatar={
                                         <Avatar
                                             aria-label="recipe"
-                                            src={userService.payload.imgUrl}
+                                            src={avatarURL || userService.payload.imgUrl}
                                             sx={{ width: 92, height: 92 }}
                                         />
                                     }
                                     action={<IconButton aria-label="settings"></IconButton>}
                                     subheader={
-                                        <label htmlFor="icon-button-file">
-                                            <input accept="image/*" id="icon-button-file" type="file" />
+                                        <label htmlFor="avatarButtonFile">
+                                            <input
+                                                accept="image/*"
+                                                id="avatarButtonFile"
+                                                type="file"
+                                                onChange={handleAvatarImg}
+                                            />
                                             <Button
                                                 color="primary"
                                                 aria-label="upload picture"
                                                 component="span"
                                                 startIcon={<PhotoCamera />}
+                                                className="buttonHeaderForm"
                                             >
                                                 modify avatar
                                             </Button>
@@ -142,6 +299,18 @@ const SettingsPage = () => {
                                     }
                                 />
                             </div>
+                            <LoadingButton
+                                variant="contained"
+                                type="submit"
+                                loading={loading}
+                                onClick={postImg}
+                                id="buttonForm"
+                            >
+                                Modifier
+                            </LoadingButton>
+                            <Button variant="contained" type="submit" onClick={resetImg} id="buttonForm">
+                                Annuler
+                            </Button>
                         </Card>
                     )}
                 </div>
@@ -168,8 +337,8 @@ const SettingsPage = () => {
                         );
                     })}
 
-                    <Button type="submit" disabled={!formIsValid()}>
-                        Send Message
+                    <Button variant="contained" type="submit" disabled={!formIsValid()} id="buttonForm">
+                        Modifier
                     </Button>
                 </form>
             </div>
