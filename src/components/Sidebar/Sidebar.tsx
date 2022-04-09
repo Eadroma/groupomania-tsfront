@@ -5,7 +5,14 @@ import { Link } from 'react-router-dom';
 import React from 'react';
 import { getItemLocalStorage } from '../../hooks/getLocalStorage';
 import getUserbyId from '../../hooks/getUser';
-const SidebarLink = ({ text, Icon, link }: any) => {
+const SidebarLink = ({ text, Icon, link, disabled }: any) => {
+    if (disabled)
+        return (
+            <div className="sidebar-link disabled">
+                <Icon />
+                <h2>{text}</h2>
+            </div>
+        );
     return (
         <div className="link">
             <Icon />
@@ -28,10 +35,10 @@ const Sidebar: React.FC = () => {
                 alt="logo Groupomania"
             />
             <SidebarLink text="Home" active={true} Icon={HomeMax} link="/" />
-            <SidebarLink text="Notifications" Icon={Notifications} link="#" />
-            <SidebarLink text="Messages" Icon={MailOutline} link="#" />
+            <SidebarLink text="Notifications" Icon={Notifications} link="#" disabled={true} />
+            <SidebarLink text="Messages" Icon={MailOutline} link="#" disabled={true} />
             <SidebarLink text={name} Icon={PermIdentity} link={'/profile/'} />
-            <SidebarLink text="More" Icon={MoreHoriz} link="#" />
+            <SidebarLink text="More" Icon={MoreHoriz} link="#" disabled={true} />
             <Button
                 id="logout"
                 onClick={() => {
