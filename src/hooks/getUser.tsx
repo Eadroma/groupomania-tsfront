@@ -20,7 +20,7 @@ const getUserbyId = (id: number) => {
             .then((response) => response.json())
             .then((response) => setResult({ status: 'loaded', payload: response }))
             .catch((error) => setResult({ status: 'error', error }));
-    });
+    }, []);
 
     return result;
 };

@@ -42,10 +42,7 @@ const AllPosts: React.FC<{}> = () => {
                 .then((response) => setUsers(response))
                 .catch((error) => console.error(error));
         };
-        const interval = setInterval(() => {
-            fillData();
-        }, 3000);
-        return () => clearInterval(interval);
+        fillData();
     }, []);
     const handleClick = (postId: number, e: React.MouseEvent) => {
         e.preventDefault();
