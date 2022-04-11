@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Service } from '../types/Service';
 import { Post } from '../types/Post';
+import { getItemLocalStorage } from './getLocalStorage';
 
 export interface Posts {
     map: any;
@@ -8,6 +9,7 @@ export interface Posts {
 }
 
 const getPostsbyId = (id: number) => {
+    const loStorage = getItemLocalStorage();
     const [result, setResult] = useState<Service<Posts>>({
         status: 'loading',
     });
@@ -15,6 +17,7 @@ const getPostsbyId = (id: number) => {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
+            authorization: loStorage.token,
         },
     };
     useEffect(() => {

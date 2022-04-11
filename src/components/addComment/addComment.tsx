@@ -26,6 +26,7 @@ const AddComment: React.FC<{ postId: number }> = ({ postId }) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                authorization: localStorage.token,
             },
             body: JSON.stringify(commentObject),
         };

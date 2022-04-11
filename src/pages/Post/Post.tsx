@@ -16,12 +16,15 @@ type Payload = {
 };
 
 const CommentSection: React.FC<{ post: Post }> = ({ post }) => {
+    const loStorage = getItemLocalStorage();
+
     const handleClick = (comment: { userId: number; content: string }) => {
         try {
             fetch(`https://groupomania-myback.herokuapp.com/api/posts/${post.id}/comments`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
+                    authorization: loStorage.token,
                 },
                 body: JSON.stringify(comment),
             })
@@ -31,7 +34,7 @@ const CommentSection: React.FC<{ post: Post }> = ({ post }) => {
             console.error(error);
         }
     };
-    const loStorage = getItemLocalStorage();
+
     const comments = post.comments;
     const users = getUsers();
     if (!users.length) return <div>No comments</div>;
@@ -71,6 +74,7 @@ const CommentSection: React.FC<{ post: Post }> = ({ post }) => {
 };
 
 const PostPage = () => {
+    const loStorage = getItemLocalStorage();
     const { id } = useParams();
     if (!id) return <div>No post id</div>;
     const [service, setService] = React.useState<Service<Payload>>({
@@ -81,6 +85,7 @@ const PostPage = () => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                authorization: loStorage.token,
             },
         })
             .then((response) => response.json())
@@ -90,6 +95,7 @@ const PostPage = () => {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
+                        authorization: loStorage.token,
                     },
                 })
                     .then((response) => response.json())

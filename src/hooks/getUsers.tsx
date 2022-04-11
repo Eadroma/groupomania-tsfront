@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
+import { getItemLocalStorage } from './getLocalStorage';
 
 const getUsers = () => {
+    const loStorage = getItemLocalStorage();
     const [result, setResult] = useState([]);
 
     const options = {
         method: 'GET',
         headers: {
             'content-Type': 'application/json',
+            authorization: loStorage.token,
         },
     };
     useEffect(() => {

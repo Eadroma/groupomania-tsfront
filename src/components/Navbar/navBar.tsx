@@ -44,6 +44,7 @@ const searchBar: React.FC<{}> = () => {
                     event.preventDefault();
 
                     const inputResult = (document.getElementById('searchbar') as HTMLInputElement).value;
+                    if (!inputResult) return;
                     const user: UserType = users.filter((user: UserType) => user.name == inputResult)[0];
                     location.href = `/profile/${user.id}`;
                 }}

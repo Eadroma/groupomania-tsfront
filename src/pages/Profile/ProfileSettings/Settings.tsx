@@ -228,6 +228,9 @@ const SettingsPage = () => {
             if (userService.status == 'loaded') {
                 fetch(`https://groupomania-myback.herokuapp.com/api/auth/${userService.payload.id}`, {
                     method: 'DELETE',
+                    headers: {
+                        authorization: loStorage.token,
+                    },
                 }).then(() => {
                     localStorage.clear();
                     location.href = '/';

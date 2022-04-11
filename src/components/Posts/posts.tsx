@@ -7,8 +7,10 @@ import AddComment from '../../components/addComment/addComment';
 
 import { User } from '../../types/User';
 import { Service } from '../../types/Service';
+import { getItemLocalStorage } from '../../hooks/getLocalStorage';
 
 const AllPosts: React.FC<{}> = () => {
+    const loStorage = getItemLocalStorage();
     const [service, setService] = useState<Service<Posts>>({
         status: 'loading',
     });
@@ -20,6 +22,7 @@ const AllPosts: React.FC<{}> = () => {
                 method: 'GET',
                 headers: {
                     'content-Type': 'application/json',
+                    authorization: loStorage.token,
                 },
             })
                 .then((response) => response.json())
@@ -32,6 +35,7 @@ const AllPosts: React.FC<{}> = () => {
                 method: 'GET',
                 headers: {
                     'content-Type': 'application/json',
+                    authorization: loStorage.token,
                 },
             })
                 .then((response) => response.json())

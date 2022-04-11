@@ -8,6 +8,7 @@ const updateUser = async (objectForm: objectForm) => {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
+            authorization: loStorage.token,
         },
         body: JSON.stringify(objectForm),
     };

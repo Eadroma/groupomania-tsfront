@@ -18,6 +18,7 @@ const CardButtons: React.FC<{ id: number; userId: number }> = ({ id, userId }) =
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
+                    authorization: loStorage.token,
                 },
             })
                 .then((response) => response.json())
@@ -41,6 +42,7 @@ const CardButtons: React.FC<{ id: number; userId: number }> = ({ id, userId }) =
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                authorization: loStorage.token,
             },
             body: JSON.stringify({ userId: loStorage.id }),
         };
@@ -61,6 +63,7 @@ const CardButtons: React.FC<{ id: number; userId: number }> = ({ id, userId }) =
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
+                authorization: loStorage.token,
             },
             body: JSON.stringify({ userId: loStorage.id }),
         };
@@ -87,6 +90,7 @@ const CardButtons: React.FC<{ id: number; userId: number }> = ({ id, userId }) =
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                authorization: loStorage.token,
             },
             body: JSON.stringify(postObject),
         };
