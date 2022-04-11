@@ -1,5 +1,7 @@
 export const getItemLocalStorage = () => {
-    let loStorage = JSON.parse(localStorage.getItem('user') || '');
+    const loStorage = localStorage.getItem('user');
 
-    return loStorage;
+    if (!loStorage) return null;
+    const loStorageJSON = JSON.parse(loStorage);
+    return loStorageJSON;
 };

@@ -13,7 +13,7 @@ type UserType = {
     imgUrl: string;
     updatedAt: string;
 };
-const searchBar: React.FC<{}> = () => {
+const SearchBar: React.FC<{}> = () => {
     const users = getUsers();
     return (
         <Paper
@@ -55,8 +55,4 @@ const searchBar: React.FC<{}> = () => {
     );
 };
 
-const navBar: React.FC<{}> = () => {
-    return searchBar({});
-};
-
-export default navBar;
+export default SearchBar;

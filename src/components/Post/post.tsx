@@ -2,13 +2,12 @@ import { Card, CardContent, Typography, Avatar, CardHeader } from '@mui/material
 import React from 'react';
 import getPostsbyId from '../../hooks/getPost';
 import './style.css';
-import getUserbyId from '../../hooks/getUser';
 import AddComment from '../../components/addComment/addComment';
 import CardButtons from '../postButton/button';
+import { User } from '../../types/User';
 
-const Posts: React.FC<{ id: number }> = ({ id }) => {
-    const service = getPostsbyId(id);
-    const user = getUserbyId(id);
+const Posts: React.FC<{ user: User }> = ({ user }) => {
+    const service = getPostsbyId(user.id);
 
     const handleClick = (postId: number, e: React.MouseEvent) => {
         e.preventDefault();
@@ -18,7 +17,6 @@ const Posts: React.FC<{ id: number }> = ({ id }) => {
         <div>
             {service.status === 'loading' && <div>Loading...</div>}
             {service.status === 'loaded' &&
-                user.status === 'loaded' &&
                 service.payload.map(
                     (data: {
                         date: string;
@@ -41,11 +39,11 @@ const Posts: React.FC<{ id: number }> = ({ id }) => {
                                         avatar={
                                             <Avatar
                                                 aria-label="recipe"
-                                                src={user.payload.imgUrl}
+                                                src={user.imgUrl}
                                                 sx={{ width: 48, height: 48 }}
                                             />
                                         }
-                                        title={`${user.payload.name} - ${user.payload.email}`}
+                                        title={`${user.name} - ${user.email}`}
                                         subheader={`${Math.round((Date.now() - parseInt(data.date)) / 60000)}m`}
                                     />
                                     <Typography variant="body2">{data.textContent}</Typography>

@@ -15,9 +15,11 @@ import {
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import './App.scss';
-import addPost from '../../components/addPost/addPost';
-import navBar from '../../components/Navbar/navBar';
 import AllPosts from '../../components/Posts/posts';
+import { getItemLocalStorage } from '../../hooks/getLocalStorage';
+import getUserbyId from '../../hooks/getUser';
+import AddPost from '../../components/addPost/addPost';
+import SearchBar from '../../components/Navbar/navBar';
 
 type LocalUserInfo = {
     id: string;
@@ -48,7 +50,7 @@ function Copyright(props: any) {
 
 const theme = createTheme();
 
-function NotSigned(): React.ReactNode {
+function NotSigned(): React.ReactElement {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -169,20 +171,37 @@ function NotSigned(): React.ReactNode {
 }
 
 export default function App() {
-    const [user] = React.useState(JSON.parse(localStorage.getItem('user') as string));
-    if (!user) return <React.Fragment>{NotSigned()}</React.Fragment>;
+    const loStorage = getItemLocalStorage();
+    if (!loStorage)
+        return (
+            <>
+                <NotSigned />
+            </>
+        );
+
+    const user = getUserbyId(loStorage.id);
+    if (!user)
+        return (
+            <>
+                <NotSigned />
+            </>
+        );
     return (
         <React.Fragment>
-            <div className="layout">
-                <Sidebar />
-                <div className="mainContent">
-                    {navBar({})}
-                    <div className="postContent">
-                        {addPost({})}
-                        {AllPosts({})}
+            {user.status == 'loading' && <div>Loading...</div>}
+            {user.status == 'loaded' && (
+                <div className="layout">
+                    <Sidebar />
+                    <div className="mainContent">
+                        <SearchBar />
+                        <div className="postContent">
+                            <AddPost user={user.payload} />
+                            <AllPosts />
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
+            {user.status == 'error' && <div>Error</div>}
         </React.Fragment>
     );
 }

@@ -28,6 +28,7 @@ ReactDOM.render(
             <Route path="/profile/:id" element={<Profile />} />
             <Route path="/profile/settings" element={<SettingsPage />} />
             <Route path="/post/:id" element={<PostPage />} />
+            <Route path="*" element={<App />} />
         </Routes>
     </BrowserRouter>,
     document.getElementById('root'),

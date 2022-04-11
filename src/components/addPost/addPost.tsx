@@ -1,7 +1,7 @@
 import { Box, Button, Divider, Stack, TextField } from '@mui/material';
 import React from 'react';
 import { getItemLocalStorage } from '../../hooks/getLocalStorage';
-import getUserbyId from '../../hooks/getUser';
+import { User } from '../../types/User';
 
 type dataObject = {
     content: string;
@@ -9,10 +9,9 @@ type dataObject = {
     userName: string;
     userEmail: string;
 };
-const addPost: React.FC<{}> = () => {
+const AddPost: React.FC<{ user: User }> = ({ user }) => {
     const [data, setData] = React.useState('');
     const localStorage = getItemLocalStorage();
-    const user = getUserbyId(localStorage.id);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setData(event.target.value);
@@ -23,8 +22,8 @@ const addPost: React.FC<{}> = () => {
         const postObject: dataObject = {
             content: data,
             userId: localStorage.id,
-            userName: user?.payload?.name as string,
-            userEmail: user?.payload?.email as string,
+            userName: user.name,
+            userEmail: user.email,
         };
 
         const api = 'https://groupomania-myback.herokuapp.com/api/posts/';
@@ -82,4 +81,4 @@ const addPost: React.FC<{}> = () => {
     );
 };
 
-export default addPost;
+export default AddPost;
