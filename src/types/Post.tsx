@@ -5,6 +5,8 @@ export type Post = {
     userEmail: string;
     imgUrl: string | null;
     likes: number;
+    userLiked: JSON;
+    comments: JSON;
     textContent: string;
     userId: number;
 };

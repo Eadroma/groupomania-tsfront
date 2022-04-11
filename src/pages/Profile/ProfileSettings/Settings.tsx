@@ -116,7 +116,6 @@ const SettingsPage = () => {
     const [coverURL, setCoverURL] = useState<string>();
 
     useEffect(() => {
-        console.log('on useEffect');
         if (images && images.cover) {
             const previewImg = URL.createObjectURL(images.cover as Blob | MediaSource);
             setCoverURL(`${previewImg}`);
@@ -128,11 +127,11 @@ const SettingsPage = () => {
     }, [images]);
 
     const handleHeaderImg = (e: { target: { files: any } }) => {
-        console.log('on handleHeaderImg');
+        console.log('on Header');
         if (images) {
             setImages({
                 ...images,
-                ['cover']: e.target.files[0],
+                cover: e.target.files[0],
             });
         } else {
             setImages({
@@ -144,7 +143,7 @@ const SettingsPage = () => {
     };
 
     const handleAvatarImg = (e: { target: { files: any } }) => {
-        console.log('on handleAvatarImg');
+        console.log('on Avatar');
         if (images) {
             setImages({
                 ...images,
@@ -159,31 +158,11 @@ const SettingsPage = () => {
         return e;
     };
 
-    // const postImg = async () => {
-    //     setLoading(true);
-    //     for (let key of Object.keys(imageURLType)) {
-    //         const data = new FormData();
-    //         data.append('file', images[0]);
-    //         data.append('upload_preset', 'meldob6j');
-    //         data.append('cloud_name', 'datxh7pfw');
-    //         try {
-    //             fetch('https://api.cloudinary.com/v1_1/datxh7pfw/image/upload', {
-    //                 method: 'post',
-    //                 body: data,
-    //             })
-    //                 .then((resp) => resp.json())
-    //                 .then((data) => {
-    //                     // console.log(data);
-    //                 });
-    //         } catch (err) {
-    //             console.error(err);
-    //         }
-    //     }
-    // };
     const postImg = () => {
         setLoading(true);
 
         if (images && images.cover) {
+            console.log('cover');
             const data = new FormData();
             data.append('file', images.cover as Blob);
             data.append('upload_preset', 'meldob6j');
@@ -201,13 +180,15 @@ const SettingsPage = () => {
                             } as objectForm)
                         ) {
                             setLoading(false);
-                            alert('profil modifié');
+                            alert('photo de couverture modifié');
                         }
                     });
             } catch (err) {
                 console.error(err);
             }
-        } else if (images && images.img) {
+        }
+        if (images && images.img) {
+            console.log('img');
             const data = new FormData();
             data.append('file', images.img as Blob);
             data.append('upload_preset', 'meldob6j');
@@ -225,7 +206,7 @@ const SettingsPage = () => {
                             } as objectForm)
                         ) {
                             setLoading(false);
-                            alert('profil modifié');
+                            alert('photo de profil modifié');
                         }
                     });
             } catch (err) {
@@ -240,6 +221,19 @@ const SettingsPage = () => {
         setCoverURL('');
         setLoading(false);
         return;
+    };
+
+    const handleDelete = () => {
+        if (window.confirm('Voulez-vous vraiment supprimer votre compte ?')) {
+            if (userService.status == 'loaded') {
+                fetch(`https://groupomania-myback.herokuapp.com/api/auth/${userService.payload.id}`, {
+                    method: 'DELETE',
+                }).then(() => {
+                    localStorage.clear();
+                    location.href = '/';
+                });
+            }
+        }
     };
 
     return (
@@ -341,6 +335,9 @@ const SettingsPage = () => {
                         Modifier
                     </Button>
                 </form>
+                <Button variant="contained" color="error" type="submit" onClick={() => handleDelete()} id="buttonForm">
+                    Supprimer
+                </Button>
             </div>
         </div>
     );

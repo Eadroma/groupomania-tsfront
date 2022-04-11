@@ -15,7 +15,6 @@ type UserType = {
 };
 const searchBar: React.FC<{}> = () => {
     const users = getUsers();
-    console.log(users);
     return (
         <Paper
             component="form"

@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import SignUp from './pages/Signup/Signup';
 import { getItemLocalStorage } from './hooks/getLocalStorage';
 import SettingsPage from './pages/Profile/ProfileSettings/Settings';
+import PostPage from './pages/Post/Post';
 
 const ProfileDefault = () => {
     const loStorage = getItemLocalStorage();
@@ -26,6 +27,7 @@ ReactDOM.render(
             <Route path="/profile" element={<ProfileDefault />} />
             <Route path="/profile/:id" element={<Profile />} />
             <Route path="/profile/settings" element={<SettingsPage />} />
+            <Route path="/post/:id" element={<PostPage />} />
         </Routes>
     </BrowserRouter>,
     document.getElementById('root'),
