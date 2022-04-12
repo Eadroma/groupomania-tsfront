@@ -1,6 +1,5 @@
-import { IconButton, Paper, Divider, Autocomplete, TextField } from '@mui/material';
+import { IconButton, Paper, Autocomplete, TextField } from '@mui/material';
 import React from 'react';
-import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import getUsers from '../../hooks/getUsers';
 

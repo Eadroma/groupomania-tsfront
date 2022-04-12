@@ -1,5 +1,5 @@
 import './sidebar.scss';
-import { BottomNavigation, BottomNavigationAction, Box, Button, Paper } from '@mui/material';
+import { BottomNavigation, BottomNavigationAction, Box, Button } from '@mui/material';
 import { HomeMax, Notifications, MailOutline, PermIdentity, MoreHoriz } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import React from 'react';
