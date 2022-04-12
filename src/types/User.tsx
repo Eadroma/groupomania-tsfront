@@ -8,4 +8,5 @@ export type User = {
     password: string;
     token: string | null;
     message: { name: string; message: string } | null;
+    isAdmin: boolean;
 };

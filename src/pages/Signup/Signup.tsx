@@ -9,6 +9,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { WindowOutlined } from '@mui/icons-material';
+import { getItemLocalStorage } from '../../hooks/getLocalStorage';
 
 type LocalUserInfo = {
     id: string;
@@ -17,12 +19,16 @@ type LocalUserInfo = {
 
 const addItemLocalStorage = (item: LocalUserInfo) => {
     let data = localStorage.getItem('user');
-
+    console.log(data);
+    console.log(item);
+    if (!data) {
+        localStorage.setItem('user', JSON.stringify(item));
+        return true;
+    }
     // error handling (existant item)
-    if (data?.length && data?.length > 0) return false;
-    localStorage.setItem('user', JSON.stringify(item));
-    return true;
+    return false;
 };
+
 function Copyright(props: any) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -39,9 +45,12 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 export default function SignUp() {
+    const loStorage = getItemLocalStorage();
+    if (loStorage && loStorage.token) {
+        window.location.href = '/';
+    }
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
         const data = new FormData(event.currentTarget);
         const api = 'https://groupomania-myback.herokuapp.com/api/auth/register';
         const resp = await fetch(api, {
@@ -52,14 +61,18 @@ export default function SignUp() {
             body: JSON.stringify({ email: data.get('email'), password: data.get('password') }),
         });
         if (resp.status == 400) {
-            console.log('in if');
             window.alert('An error occured');
         } else {
-            console.log(1);
             const result = await resp.json();
             const { id, token } = result;
             const localUser = { id, token };
-            if (addItemLocalStorage(localUser)) window.location.href = '/';
+            const lo = addItemLocalStorage(localUser);
+            console.log(lo);
+            if (lo) window.location.href = '/';
+            else {
+                window.alert('vous êtes déjà inscrit et connecté !');
+                return;
+            }
         }
     };
 

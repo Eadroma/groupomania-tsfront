@@ -27,9 +27,7 @@ const CommentSection: React.FC<{ post: Post }> = ({ post }) => {
                     authorization: loStorage.token,
                 },
                 body: JSON.stringify(comment),
-            })
-                .then((response) => response.json())
-                .then((response) => console.log(response));
+            });
         } catch (error) {
             console.error(error);
         }

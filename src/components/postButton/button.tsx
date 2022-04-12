@@ -4,6 +4,7 @@ import { getItemLocalStorage } from '../../hooks/getLocalStorage';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Post } from '../../types/Post';
 import './button.scss';
+import getUserbyId from '../../hooks/getUser';
 
 const CardButtons: React.FC<{ id: number; userId: number }> = ({ id, userId }) => {
     const loStorage = getItemLocalStorage();
@@ -11,6 +12,7 @@ const CardButtons: React.FC<{ id: number; userId: number }> = ({ id, userId }) =
     const [isLiked, setIsLiked] = React.useState<boolean>(false);
     const [commentShow, setCommentShow] = React.useState<boolean>(false);
     const [open, setOpen] = React.useState(false);
+    const user = getUserbyId(loStorage.id);
     const [data, setData] = React.useState('');
     useEffect(() => {
         if (!post) {
@@ -60,7 +62,7 @@ const CardButtons: React.FC<{ id: number; userId: number }> = ({ id, userId }) =
                 'Content-Type': 'application/json',
                 authorization: loStorage.token,
             },
-            body: JSON.stringify({ userId: loStorage.id }),
+            body: JSON.stringify({ userId: userId }),
         };
 
         fetch(`https://groupomania-myback.herokuapp.com/api/posts/${id}`, options).then((response) => {
@@ -74,13 +76,11 @@ const CardButtons: React.FC<{ id: number; userId: number }> = ({ id, userId }) =
     const handleClose = () => setOpen(false);
 
     const handleModifPost = () => {
-        console.log(data);
         if (!data) return;
         const postObject = {
-            userId: loStorage.id,
+            userId: userId,
             content: data,
         };
-        console.log(postObject);
         const options = {
             method: 'PUT',
             headers: {
@@ -94,11 +94,10 @@ const CardButtons: React.FC<{ id: number; userId: number }> = ({ id, userId }) =
             .then((response) => {
                 setPost(response);
                 setOpen(false);
-                console.log(response);
             })
             .catch((error) => console.error(error));
     };
-    if (userId == loStorage.id)
+    if (userId == loStorage.id || (user.status == 'loaded' && user.payload.isAdmin))
         return (
             <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Fab variant="extended" color="primary" aria-label="add" onClick={() => handleComment()}>

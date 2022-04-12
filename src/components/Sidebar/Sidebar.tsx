@@ -52,7 +52,7 @@ const Sidebar: React.FC = () => {
             </div>
             <div className="bottomBar">
                 <Box sx={{ width: '100%' }}>
-                    <BottomNavigation showLabels>
+                    <BottomNavigation>
                         <img
                             id="brand"
                             className="BottomImg"

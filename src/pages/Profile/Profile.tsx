@@ -4,15 +4,26 @@ import Sidebar from '../../components/Sidebar/Sidebar';
 import Posts from '../../components/Post/post';
 import './style.scss';
 import getUserbyId from '../../hooks/getUser';
-import { Avatar, Card, CardHeader, CardMedia, IconButton, Skeleton } from '@mui/material';
+import { Avatar, Button, Card, CardHeader, CardMedia, IconButton, Skeleton } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AddPost from '../../components/addPost/addPost';
 import { getItemLocalStorage } from '../../hooks/getLocalStorage';
 import { User } from '../../types/User';
 
-const ProfileHeader: React.FC<{ user: User }> = ({ user }) => {
+const ProfileHeader: React.FC<{ user: User; isAdmin: boolean }> = ({ user, isAdmin }) => {
     const loStorage = getItemLocalStorage();
-
+    const handleDelete = () => {
+        if (isAdmin && window.confirm('Voulez-vous vraiment supprimer le compte ?')) {
+            fetch(`https://groupomania-myback.herokuapp.com/api/auth/${user.id}`, {
+                method: 'DELETE',
+                headers: {
+                    authorization: loStorage.token,
+                },
+            }).then(() => {
+                location.href = '/';
+            });
+        }
+    };
     return (
         <>
             <Card className="layoutHeader">
@@ -31,6 +42,20 @@ const ProfileHeader: React.FC<{ user: User }> = ({ user }) => {
                             </Link>
                         </div>
                     )}
+                    {isAdmin && (
+                        <div className="layoutCardSettings">
+                            <Button
+                                variant="contained"
+                                color="error"
+                                type="submit"
+                                onClick={() => handleDelete()}
+                                id="deleteAccount"
+                                sx={{ marginRight: '5rem' }}
+                            >
+                                Supprimer
+                            </Button>
+                        </div>
+                    )}
                 </div>
             </Card>
         </>
@@ -41,17 +66,21 @@ export default function Profile() {
     const { id } = useParams();
     if (!id) location.href = '/';
     const user = getUserbyId(parseInt(id!));
+    const connectedUser = getUserbyId(loStorage.id);
+    console.log(connectedUser);
+    console.log(loStorage.id);
+    console.log(loStorage.id == id || connectedUser?.payload?.isAdmin);
     return (
         <div className="container">
             <Sidebar />
-            {user.status === 'loading' && (
+            {user.status === 'loading' && connectedUser.status === 'loading' && (
                 <div className="layoutProfile">
                     <Skeleton variant="rectangular" height={275} animation="wave" />
                 </div>
             )}
-            {user.status === 'loaded' && (
+            {user.status === 'loaded' && connectedUser.status === 'loaded' && (
                 <div className="profileLayout">
-                    <ProfileHeader user={user.payload} />
+                    <ProfileHeader user={user.payload} isAdmin={connectedUser.payload.isAdmin} />
                     {loStorage.id == id ? <AddPost user={user.payload} /> : ''}
                     <h2 id="posts">Posts:</h2>
                     <Posts user={user.payload} />

@@ -127,7 +127,6 @@ const SettingsPage = () => {
     }, [images]);
 
     const handleHeaderImg = (e: { target: { files: any } }) => {
-        console.log('on Header');
         if (images) {
             setImages({
                 ...images,
@@ -143,7 +142,6 @@ const SettingsPage = () => {
     };
 
     const handleAvatarImg = (e: { target: { files: any } }) => {
-        console.log('on Avatar');
         if (images) {
             setImages({
                 ...images,
@@ -162,7 +160,6 @@ const SettingsPage = () => {
         setLoading(true);
 
         if (images && images.cover) {
-            console.log('cover');
             const data = new FormData();
             data.append('file', images.cover as Blob);
             data.append('upload_preset', 'meldob6j');
@@ -188,7 +185,6 @@ const SettingsPage = () => {
             }
         }
         if (images && images.img) {
-            console.log('img');
             const data = new FormData();
             data.append('file', images.img as Blob);
             data.append('upload_preset', 'meldob6j');
@@ -241,118 +237,123 @@ const SettingsPage = () => {
             }
         }
     };
-    console.log(userService);
     return (
         <div className="container">
             <Sidebar />
-            {userService.status === 'loaded' && userService.payload.token == loStorage.token && (
-                <div className="settingsForm">
-                    <div className="imgSettings">
-                        <Card className="layoutHeader">
-                            <CardMedia
-                                component="img"
-                                height="275"
-                                image={coverURL || userService.payload.coverUrl}
-                                alt="cover img"
-                                sx={{ height: 275, width: 1080 }}
-                            />
-                            <label htmlFor="headerButtonFile">
-                                <input accept="image/*" id="headerButtonFile" type="file" onChange={handleHeaderImg} />
-                                <Button
-                                    color="primary"
-                                    aria-label="upload picture"
-                                    component="span"
-                                    startIcon={<PhotoCamera />}
-                                    className="buttonHeaderForm"
-                                >
-                                    modify header
-                                </Button>
-                            </label>
-                            <div className="layoutCardMedia">
-                                <CardHeader
-                                    avatar={
-                                        <Avatar
-                                            aria-label="recipe"
-                                            src={avatarURL || userService.payload.imgUrl}
-                                            sx={{ width: 92, height: 92 }}
-                                        />
-                                    }
-                                    action={<IconButton aria-label="settings"></IconButton>}
-                                    subheader={
-                                        <label htmlFor="avatarButtonFile">
-                                            <input
-                                                accept="image/*"
-                                                id="avatarButtonFile"
-                                                type="file"
-                                                onChange={handleAvatarImg}
-                                            />
-                                            <Button
-                                                color="primary"
-                                                aria-label="upload picture"
-                                                component="span"
-                                                startIcon={<PhotoCamera />}
-                                                className="buttonHeaderForm"
-                                            >
-                                                modify avatar
-                                            </Button>
-                                        </label>
-                                    }
+            {userService.status === 'loaded' &&
+                (userService.payload.token == loStorage.token || userService.payload.isAdmin) && (
+                    <div className="settingsForm">
+                        <div className="imgSettings">
+                            <Card className="layoutHeader">
+                                <CardMedia
+                                    component="img"
+                                    height="275"
+                                    image={coverURL || userService.payload.coverUrl}
+                                    alt="cover img"
+                                    sx={{ height: 275, width: 1080 }}
                                 />
-                            </div>
-                            <LoadingButton
-                                variant="contained"
-                                type="submit"
-                                loading={loading}
-                                onClick={postImg}
-                                id="buttonForm"
-                            >
-                                Modifier
-                            </LoadingButton>
-                            <Button variant="contained" type="submit" onClick={resetImg} id="buttonForm">
-                                Annuler
-                            </Button>
-                        </Card>
-                    </div>
-                    <div className="formSection">
-                        <div className="formHeader">
-                            <h1>Modifier votre profil</h1>
-                        </div>
-                        <form onSubmit={handleFormSubmit}>
-                            {inputFieldValues.map((inputFieldValue, index) => {
-                                return (
-                                    <TextField
-                                        key={index}
-                                        onBlur={handleInputValue}
-                                        onChange={handleInputValue}
-                                        name={inputFieldValue.name}
-                                        label={inputFieldValue.label}
-                                        multiline={inputFieldValue.multiline ?? false}
-                                        rows={inputFieldValue.rows ?? 1}
-                                        autoComplete="none"
-                                        {...(errors[inputFieldValue.name] && {
-                                            error: true,
-                                            helperText: errors[inputFieldValue.name],
-                                        })}
+                                <label htmlFor="headerButtonFile">
+                                    <input
+                                        accept="image/*"
+                                        id="headerButtonFile"
+                                        type="file"
+                                        onChange={handleHeaderImg}
                                     />
-                                );
-                            })}
+                                    <Button
+                                        color="primary"
+                                        aria-label="upload picture"
+                                        component="span"
+                                        startIcon={<PhotoCamera />}
+                                        className="buttonHeaderForm"
+                                    >
+                                        modify header
+                                    </Button>
+                                </label>
+                                <div className="layoutCardMedia">
+                                    <CardHeader
+                                        avatar={
+                                            <Avatar
+                                                aria-label="recipe"
+                                                src={avatarURL || userService.payload.imgUrl}
+                                                sx={{ width: 92, height: 92 }}
+                                            />
+                                        }
+                                        action={<IconButton aria-label="settings"></IconButton>}
+                                        subheader={
+                                            <label htmlFor="avatarButtonFile">
+                                                <input
+                                                    accept="image/*"
+                                                    id="avatarButtonFile"
+                                                    type="file"
+                                                    onChange={handleAvatarImg}
+                                                />
+                                                <Button
+                                                    color="primary"
+                                                    aria-label="upload picture"
+                                                    component="span"
+                                                    startIcon={<PhotoCamera />}
+                                                    className="buttonHeaderForm"
+                                                >
+                                                    modify avatar
+                                                </Button>
+                                            </label>
+                                        }
+                                    />
+                                </div>
+                                <LoadingButton
+                                    variant="contained"
+                                    type="submit"
+                                    loading={loading}
+                                    onClick={postImg}
+                                    id="buttonForm"
+                                >
+                                    Modifier
+                                </LoadingButton>
+                                <Button variant="contained" type="submit" onClick={resetImg} id="buttonForm">
+                                    Annuler
+                                </Button>
+                            </Card>
+                        </div>
+                        <div className="formSection">
+                            <div className="formHeader">
+                                <h1>Modifier votre profil</h1>
+                            </div>
+                            <form onSubmit={handleFormSubmit}>
+                                {inputFieldValues.map((inputFieldValue, index) => {
+                                    return (
+                                        <TextField
+                                            key={index}
+                                            onBlur={handleInputValue}
+                                            onChange={handleInputValue}
+                                            name={inputFieldValue.name}
+                                            label={inputFieldValue.label}
+                                            multiline={inputFieldValue.multiline ?? false}
+                                            rows={inputFieldValue.rows ?? 1}
+                                            autoComplete="none"
+                                            {...(errors[inputFieldValue.name] && {
+                                                error: true,
+                                                helperText: errors[inputFieldValue.name],
+                                            })}
+                                        />
+                                    );
+                                })}
 
-                            <Button variant="contained" type="submit" disabled={!formIsValid()} id="buttonForm">
-                                Modifier
+                                <Button variant="contained" type="submit" disabled={!formIsValid()} id="buttonForm">
+                                    Modifier
+                                </Button>
+                            </form>
+                            <Button
+                                variant="contained"
+                                color="error"
+                                type="submit"
+                                onClick={() => handleDelete()}
+                                id="deleteAccount"
+                            >
+                                Supprimer
                             </Button>
-                        </form>
-                        <Button
-                            variant="contained"
-                            color="error"
-                            type="submit"
-                            onClick={() => handleDelete()}
-                            id="deleteAccount"
-                        >
-                            Supprimer
-                        </Button>
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
         </div>
     );
 };
