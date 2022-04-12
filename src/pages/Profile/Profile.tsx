@@ -37,6 +37,7 @@ const ProfileHeader: React.FC<{ user: User }> = ({ user }) => {
     );
 };
 export default function Profile() {
+    const loStorage = getItemLocalStorage();
     const { id } = useParams();
     if (!id) location.href = '/';
     const user = getUserbyId(parseInt(id!));
@@ -51,7 +52,7 @@ export default function Profile() {
             {user.status === 'loaded' && (
                 <div className="profileLayout">
                     <ProfileHeader user={user.payload} />
-                    <AddPost user={user.payload} />
+                    {loStorage.id == id ? <AddPost user={user.payload} /> : ''}
                     <h2 id="posts">Posts:</h2>
                     <Posts user={user.payload} />
                 </div>
