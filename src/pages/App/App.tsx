@@ -180,6 +180,13 @@ export default function App() {
         );
 
     const user = getUserbyId(loStorage.id);
+    React.useEffect(() => {
+        if (user.status == 'loaded' && user.payload.message && user.payload.message.name == 'JsonWebTokenError') {
+            localStorage.removeItem('user');
+            window.location.reload();
+        }
+    });
+
     if (!user)
         return (
             <>
@@ -195,7 +202,9 @@ export default function App() {
                     <div className="mainContent">
                         <SearchBar />
                         <div className="postContent">
-                            <AddPost user={user.payload} />
+                            <div className="AddPost">
+                                <AddPost user={user.payload} />
+                            </div>
                             <AllPosts />
                         </div>
                     </div>

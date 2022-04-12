@@ -1,3 +1,22 @@
+@import '../../utils/mixins.scss';
+
 .modal {
     width: 80%;
+}
+
+.MuiButtonBase-root {
+    z-index: 2 !important;
+}
+
+@include xs {
+    .MuiButtonBase-root {
+        font-size: small !important;
+    }
+}
+
+@include lg {
+    .MuiButtonBase-root {
+
+        font-size: auto !important;
+    }
 }

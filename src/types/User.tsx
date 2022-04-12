@@ -7,4 +7,5 @@ export type User = {
     name: string;
     password: string;
     token: string | null;
+    message: { name: string; message: string } | null;
 };

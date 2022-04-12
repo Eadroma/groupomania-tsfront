@@ -21,7 +21,6 @@ const getUserbyId = (id: number) => {
             .then((response) => setResult({ status: 'loaded', payload: response }))
             .catch((error) => setResult({ status: 'error', error }));
     }, []);
-
     return result;
 };
 

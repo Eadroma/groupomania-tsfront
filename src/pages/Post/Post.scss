@@ -1,14 +1,30 @@
+@import '../../utils/mixins.scss';
+
 .postPageContainer {
     display: flex;
 
     .postPage {
-        align-self: center;
         width: 100%;
+        align-self: center;
         margin: auto;
+        margin: 0;
 
         .cardPost {
-            width: 80%;
+            width: 90%;
             margin: auto;
+        }
+    }
+
+    @include lg {
+        .postPage {
+            width: 70%;
+            margin-left: 25%;
+
+            .cardPost {
+                width: 80%;
+                margin: auto;
+
+            }
         }
     }
 }
@@ -47,14 +63,20 @@
 }
 
 .commentCard {
-    width: 80%;
     margin: 1rem auto;
     padding: 1rem;
+    width: 85%;
+
+    @include lg {
+        width: 80%;
+
+    }
 
     #AddCommentLayout {
         -webkit-animation: slide-in-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
         animation: slide-in-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
     }
+
 }
 
 .CommentButtonDelete {

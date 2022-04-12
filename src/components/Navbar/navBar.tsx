@@ -16,42 +16,40 @@ type UserType = {
 const SearchBar: React.FC<{}> = () => {
     const users = getUsers();
     return (
-        <Paper
-            component="form"
-            sx={{
-                p: '2px 4px',
-                display: 'flex',
-                alignItems: 'center',
-                width: '80%',
-            }}
-        >
-            <IconButton sx={{ p: '10px' }} aria-label="menu">
-                <MenuIcon />
-            </IconButton>
-            <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-            <Autocomplete
-                sx={{ ml: 1, flex: 1 }}
-                placeholder="Jean paul.."
-                renderInput={(params) => <TextField {...params} label="Name" />}
-                options={users.map((user: UserType) => user.name)}
-                id="searchbar"
-            />
-            <IconButton
-                type="submit"
-                sx={{ p: '10px' }}
-                aria-label="search"
-                onClick={(event) => {
-                    event.preventDefault();
-
-                    const inputResult = (document.getElementById('searchbar') as HTMLInputElement).value;
-                    if (!inputResult) return;
-                    const user: UserType = users.filter((user: UserType) => user.name == inputResult)[0];
-                    location.href = `/profile/${user.id}`;
+        <div className="searchBar">
+            <Paper
+                component="form"
+                sx={{
+                    p: '2px 4px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    width: '80%',
                 }}
             >
-                <SearchIcon />
-            </IconButton>
-        </Paper>
+                <Autocomplete
+                    sx={{ ml: 1, flex: 1 }}
+                    placeholder="Jean paul.."
+                    renderInput={(params) => <TextField {...params} label="Name" />}
+                    options={users.map((user: UserType) => user.name)}
+                    id="searchbar"
+                />
+                <IconButton
+                    type="submit"
+                    sx={{ p: '10px' }}
+                    aria-label="search"
+                    onClick={(event) => {
+                        event.preventDefault();
+
+                        const inputResult = (document.getElementById('searchbar') as HTMLInputElement).value;
+                        if (!inputResult) return;
+                        const user: UserType = users.filter((user: UserType) => user.name == inputResult)[0];
+                        location.href = `/profile/${user.id}`;
+                    }}
+                >
+                    <SearchIcon />
+                </IconButton>
+            </Paper>
+        </div>
     );
 };
 
