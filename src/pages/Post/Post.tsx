@@ -110,7 +110,7 @@ const PostPage = () => {
                     });
             })
             .catch((error) => setService({ status: 'error', error }));
-    });
+    }, []);
 
     return (
         <div className="postPageContainer">
