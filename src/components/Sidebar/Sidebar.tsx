@@ -44,8 +44,7 @@ const Sidebar: React.FC = () => {
                     id="logout"
                     onClick={() => {
                         localStorage.clear();
-                        location.href = '/';
-                        window.location.reload();
+                        window.location.href = '/';
                     }}
                 >
                     Logout

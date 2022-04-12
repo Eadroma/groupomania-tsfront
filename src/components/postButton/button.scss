@@ -2,6 +2,10 @@
 
 .modal {
     width: 80%;
+
+    .MuiDialog-paper {
+        width: 60%;
+    }
 }
 
 .MuiButtonBase-root {

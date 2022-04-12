@@ -238,13 +238,13 @@ const SettingsPage = () => {
             }
         }
     };
-
+    console.log(userService);
     return (
         <div className="container">
             <Sidebar />
-            <div className="settingsForm">
-                <div className="imgSettings">
-                    {userService.status === 'loaded' && (
+            {userService.status === 'loaded' && userService.payload.token == loStorage.token && (
+                <div className="settingsForm">
+                    <div className="imgSettings">
                         <Card className="layoutHeader">
                             <CardMedia
                                 component="img"
@@ -309,47 +309,47 @@ const SettingsPage = () => {
                                 Annuler
                             </Button>
                         </Card>
-                    )}
-                </div>
-                <div className="formSection">
-                    <div className="formHeader">
-                        <h1>Modifier votre profil</h1>
                     </div>
-                    <form onSubmit={handleFormSubmit}>
-                        {inputFieldValues.map((inputFieldValue, index) => {
-                            return (
-                                <TextField
-                                    key={index}
-                                    onBlur={handleInputValue}
-                                    onChange={handleInputValue}
-                                    name={inputFieldValue.name}
-                                    label={inputFieldValue.label}
-                                    multiline={inputFieldValue.multiline ?? false}
-                                    rows={inputFieldValue.rows ?? 1}
-                                    autoComplete="none"
-                                    {...(errors[inputFieldValue.name] && {
-                                        error: true,
-                                        helperText: errors[inputFieldValue.name],
-                                    })}
-                                />
-                            );
-                        })}
+                    <div className="formSection">
+                        <div className="formHeader">
+                            <h1>Modifier votre profil</h1>
+                        </div>
+                        <form onSubmit={handleFormSubmit}>
+                            {inputFieldValues.map((inputFieldValue, index) => {
+                                return (
+                                    <TextField
+                                        key={index}
+                                        onBlur={handleInputValue}
+                                        onChange={handleInputValue}
+                                        name={inputFieldValue.name}
+                                        label={inputFieldValue.label}
+                                        multiline={inputFieldValue.multiline ?? false}
+                                        rows={inputFieldValue.rows ?? 1}
+                                        autoComplete="none"
+                                        {...(errors[inputFieldValue.name] && {
+                                            error: true,
+                                            helperText: errors[inputFieldValue.name],
+                                        })}
+                                    />
+                                );
+                            })}
 
-                        <Button variant="contained" type="submit" disabled={!formIsValid()} id="buttonForm">
-                            Modifier
+                            <Button variant="contained" type="submit" disabled={!formIsValid()} id="buttonForm">
+                                Modifier
+                            </Button>
+                        </form>
+                        <Button
+                            variant="contained"
+                            color="error"
+                            type="submit"
+                            onClick={() => handleDelete()}
+                            id="deleteAccount"
+                        >
+                            Supprimer
                         </Button>
-                    </form>
-                    <Button
-                        variant="contained"
-                        color="error"
-                        type="submit"
-                        onClick={() => handleDelete()}
-                        id="deleteAccount"
-                    >
-                        Supprimer
-                    </Button>
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 };

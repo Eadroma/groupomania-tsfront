@@ -1,5 +1,5 @@
 import { Box, Button, Divider, Stack, TextField } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { getItemLocalStorage } from '../../hooks/getLocalStorage';
 import { User } from '../../types/User';
 
@@ -13,6 +13,12 @@ const AddPost: React.FC<{ user: User }> = ({ user }) => {
     const [data, setData] = React.useState('');
     const localStorage = getItemLocalStorage();
 
+    useEffect(() => {
+        if (data.length == 255) {
+            alert('You have reached the limit of 255 characters');
+            setData('');
+        }
+    });
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setData(event.target.value);
     };

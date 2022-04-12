@@ -25,12 +25,6 @@ const CardButtons: React.FC<{ id: number; userId: number }> = ({ id, userId }) =
                 .then((response) => setPost(response))
                 .catch((error) => console.error(error));
         } else {
-            const userLiked: { [key: string]: any } = post?.userLiked as { [key: string]: any };
-            if (userLiked && userLiked[userId.toString()]) {
-                setIsLiked(true);
-            } else {
-                setIsLiked(false);
-            }
             const htmlElement = document.getElementById(`${id}`);
             if (!htmlElement) return;
             htmlElement.style.display = commentShow ? 'block' : 'none';
@@ -50,6 +44,7 @@ const CardButtons: React.FC<{ id: number; userId: number }> = ({ id, userId }) =
             .then((response) => response.json())
             .then((response) => {
                 setPost(response);
+                setIsLiked(!isLiked);
             })
             .catch((error) => console.error(error));
     };
@@ -119,6 +114,8 @@ const CardButtons: React.FC<{ id: number; userId: number }> = ({ id, userId }) =
                             id="textArea"
                             label="Your Post"
                             fullWidth
+                            multiline
+                            rows={4}
                             value={data}
                             onChange={(e) => setData(e.target.value)}
                             placeholder="Say hello world !"

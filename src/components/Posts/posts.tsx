@@ -48,6 +48,10 @@ const AllPosts: React.FC<{}> = () => {
         e.preventDefault();
         window.location.href = `/post/${postId}`;
     };
+    const handleClickProfile = (userId: number, e: React.MouseEvent) => {
+        e.preventDefault();
+        window.location.href = `/profile/${userId}`;
+    };
     return (
         <div id="postMain">
             {service.status === 'loading' && <div>Loading...</div>}
@@ -71,7 +75,10 @@ const AllPosts: React.FC<{}> = () => {
                         return (
                             <div className="postLayout">
                                 <Card>
-                                    <CardContent onClick={(e) => handleClick(data.id, e)} sx={{ cursor: 'pointer' }}>
+                                    <CardContent
+                                        sx={{ cursor: 'pointer' }}
+                                        onClick={(e) => handleClickProfile(data.userId, e)}
+                                    >
                                         <CardHeader
                                             avatar={
                                                 <Avatar
@@ -83,7 +90,13 @@ const AllPosts: React.FC<{}> = () => {
                                             title={`${data.userName} - ${data.userEmail}`}
                                             subheader={`${Math.round((Date.now() - parseInt(data.date)) / 60000)}m`}
                                         />
-                                        <Typography variant="body2">{data.textContent}</Typography>
+                                        <Typography
+                                            variant="body2"
+                                            onClick={(e) => handleClick(data.id, e)}
+                                            className="textContentPostLayout"
+                                        >
+                                            {data.textContent}
+                                        </Typography>
                                     </CardContent>
                                     <CardButtons userId={data.userId} id={data.id} />
                                     <div id={`${data.id}`}>
