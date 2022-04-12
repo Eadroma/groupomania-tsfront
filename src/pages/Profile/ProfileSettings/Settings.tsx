@@ -213,6 +213,9 @@ const SettingsPage = () => {
                 console.error(err);
             }
         }
+        if (!images) {
+            setLoading(false);
+        }
     };
 
     const resetImg = () => {
