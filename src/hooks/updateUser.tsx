@@ -14,7 +14,10 @@ const updateUser = async (objectForm: objectForm) => {
     };
 
     const resp = await fetch(api, options);
-
+    if (resp.status == 401) {
+        localStorage.clear();
+        window.location.href = '/';
+    }
     if (resp.status != 201) {
         console.error('error');
         return false;

@@ -17,6 +17,13 @@ const getUserbyId = (id: number) => {
             },
         };
         fetch(`https://groupomania-myback.herokuapp.com/api/auth/${id}`, options)
+            .then((response) => {
+                if (response.status == 401) {
+                    localStorage.clear();
+                    window.location.href = '/';
+                }
+                return response;
+            })
             .then((response) => response.json())
             .then((response) => setResult({ status: 'loaded', payload: response }))
             .catch((error) => setResult({ status: 'error', error }));

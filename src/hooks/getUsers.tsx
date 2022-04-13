@@ -14,6 +14,13 @@ const getUsers = () => {
     };
     useEffect(() => {
         fetch(`https://groupomania-myback.herokuapp.com/api/auth/`, options)
+            .then((response) => {
+                if (response.status == 401) {
+                    localStorage.clear();
+                    window.location.href = '/';
+                }
+                return response;
+            })
             .then((response) => response.json())
             .then((response) => setResult(response))
             .catch((error) => console.error(error));
