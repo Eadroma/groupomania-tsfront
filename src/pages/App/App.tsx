@@ -116,7 +116,7 @@ function NotSigned(): React.ReactElement {
                             alt="Groupomania Logo"
                         />
                         <Typography component="h1" variant="h5">
-                            Connection
+                            Connexion
                         </Typography>
                         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
                             <TextField
@@ -172,7 +172,7 @@ function NotSigned(): React.ReactElement {
 
 export default function App() {
     const loStorage = getItemLocalStorage();
-    if (!loStorage)
+    if (!loStorage && loStorage.id)
         return (
             <>
                 <NotSigned />
@@ -180,6 +180,7 @@ export default function App() {
         );
 
     const user = getUserbyId(loStorage.id);
+
     React.useEffect(() => {
         if (user.status == 'loaded' && user.payload.message && user.payload.message.name == 'JsonWebTokenError') {
             localStorage.removeItem('user');
