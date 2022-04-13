@@ -172,7 +172,7 @@ function NotSigned(): React.ReactElement {
 
 export default function App() {
     const loStorage = getItemLocalStorage();
-    if (!loStorage && loStorage.id)
+    if (!loStorage)
         return (
             <>
                 <NotSigned />
